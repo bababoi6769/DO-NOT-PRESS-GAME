@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Assert the build is self-contained
+        run: |
+          set -euo pipefail
+          test -f dist/index.html
+          # the game itself must be one file; only the social preview card may sit beside it
+          stray=$(find dist -type f ! -name index.html ! -name social-preview.png)
+          if [ -n "$stray" ]; then
+            echo "::error::unexpected build artefacts:"; echo "$stray"; exit 1
+          fi
+          for pattern in 'fetch(' 'XMLHttpRequest' 'WebSocket' 'sendBeacon' 'href="http'; do
+            if grep -qF "$pattern" dist/index.html; then
+              echo "::error::dist/index.html references a network primitive: $pattern"
+              exit 1
+            fi
+          done
+          echo "dist/index.html is self-contained and makes no network calls at runtime."
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: chaos-button-dist
+          path: dist/index.html
+          if-no-files-found: error

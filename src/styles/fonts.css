@@ -1,0 +1,46 @@
+/* ————————————————————————————————————————————————
+   Typography — self-hosted, Latin subset only.
+
+   These faces are vendored into the bundle rather than fetched from a
+   font CDN so that loading the game performs ZERO network requests.
+   That keeps the promise printed under the console panel true: nothing
+   about the player leaves the device.
+
+   Archivo          · SIL Open Font License 1.1 — see assets/fonts/LICENSE-Archivo.txt
+   IBM Plex Mono    · SIL Open Font License 1.1 — see assets/fonts/LICENSE-IBM-Plex-Mono.txt
+———————————————————————————————————————————————— */
+
+/* Latin only: U+0000-00FF and friends. Kept in sync with the source
+   subset ranges published by Fontsource. */
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900; /* variable axis — covers the 500–900 range we use */
+  font-display: swap;
+  src: url("../assets/fonts/archivo-latin-var.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/ibm-plex-mono-latin-400.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../assets/fonts/ibm-plex-mono-latin-600.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
